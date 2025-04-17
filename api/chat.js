@@ -1,7 +1,7 @@
 import { Configuration, OpenAIApi } from 'openai';
 
 const configuration = new Configuration({
-  apiKey: "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"
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 const openai = new OpenAIApi(configuration);
@@ -23,19 +23,21 @@ export default async function handler(req, res) {
       messages: [
         {
           role: 'system',
-          content: "Tu es Léa, experte skincare de la marque Byeol. Tu réponds aux clients avec clarté, professionnalisme et bienveillance. Tu expliques les patchs anti-boutons, les délais de livraison, les retours et tu aides les clients à faire le bon choix."
+          content: "Tu es Léa, l'experte skincare de la marque Byeol. Tu donnes des conseils professionnels, bienveillants et clairs sur les patchs anti-boutons, les délais de livraison, les retours, etc.",
         },
         {
           role: 'user',
-          content: message
-        }
-      ]
+          content: message,
+        },
+      ],
     });
 
     const response = completion.data.choices[0].message.content;
     res.status(200).json({ response });
   } catch (error) {
-    console.error('Erreur OpenAI :', error);
-    res.status(500).json({ error: `Erreur OpenAI : ${error.message || 'inconnue'}` });
+    console.error('❌ Erreur OpenAI :', error);
+    res.status(500).json({
+      error: `Erreur OpenAI : ${error.message || 'inconnue'}`,
+    });
   }
 }
