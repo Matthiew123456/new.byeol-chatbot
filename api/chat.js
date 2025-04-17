@@ -1,9 +1,7 @@
 import { Configuration, OpenAIApi } from 'openai';
 
-console.log("🧪 OPENAI_API_KEY:", process.env.OPENAI_API_KEY);
-
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: "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"
 });
 
 const openai = new OpenAIApi(configuration);
@@ -25,7 +23,7 @@ export default async function handler(req, res) {
       messages: [
         {
           role: 'system',
-          content: "Tu es Léa, experte skincare de la marque Byeol. Tu aides les clients à comprendre nos produits et services comme les patchs anti-boutons, les délais de livraison ou les retours.",
+          content: "Tu es Léa, l'experte skincare de Byeol. Tu expliques les produits, les retours, les délais, tout avec professionnalisme, clarté et bienveillance.",
         },
         {
           role: 'user',
@@ -38,8 +36,6 @@ export default async function handler(req, res) {
     res.status(200).json({ response });
   } catch (error) {
     console.error('Erreur OpenAI :', error);
-
-    // ➕ on renvoie l’erreur complète pour affichage dans le chatbot
     res.status(500).json({
       error: `Erreur OpenAI : ${error.message || 'inconnue'}`,
     });
