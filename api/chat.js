@@ -1,14 +1,14 @@
 import { Configuration, OpenAIApi } from 'openai';
 
 const configuration = new Configuration({
-  apiKey: "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"
+  apiKey: "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"
 });
 
 const openai = new OpenAIApi(configuration);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ message: 'Méthode non autorisée' });
   }
 
   const { message } = req.body;
@@ -23,21 +23,19 @@ export default async function handler(req, res) {
       messages: [
         {
           role: 'system',
-          content: "Tu es Léa, l'experte skincare de Byeol. Tu expliques les produits, les retours, les délais, tout avec professionnalisme, clarté et bienveillance.",
+          content: "Tu es Léa, experte skincare de la marque Byeol. Tu réponds aux clients avec clarté, professionnalisme et bienveillance. Tu expliques les patchs anti-boutons, les délais de livraison, les retours et tu aides les clients à faire le bon choix."
         },
         {
           role: 'user',
-          content: message,
-        },
-      ],
+          content: message
+        }
+      ]
     });
 
     const response = completion.data.choices[0].message.content;
     res.status(200).json({ response });
   } catch (error) {
     console.error('Erreur OpenAI :', error);
-    res.status(500).json({
-      error: `Erreur OpenAI : ${error.message || 'inconnue'}`,
-    });
+    res.status(500).json({ error: `Erreur OpenAI : ${error.message || 'inconnue'}` });
   }
 }
